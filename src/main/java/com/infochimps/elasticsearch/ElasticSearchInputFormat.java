@@ -1,34 +1,24 @@
 package com.infochimps.elasticsearch;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-
+import com.infochimps.elasticsearch.hadoop.util.HadoopUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.hadoop.io.*;
 import org.apache.hadoop.conf.Configurable;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.mapreduce.InputFormat;
-import org.apache.hadoop.mapreduce.RecordReader;
-import org.apache.hadoop.mapreduce.InputSplit;
-import org.apache.hadoop.mapreduce.JobContext;
-import org.apache.hadoop.mapreduce.TaskAttemptContext;
-
-import com.infochimps.elasticsearch.hadoop.util.HadoopUtils;
-
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.Requests;
-import org.elasticsearch.search.SearchHit;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.*;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.FilterBuilders.*;
+import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.node.Node;
+import org.elasticsearch.node.NodeBuilder;
+import org.elasticsearch.search.SearchHit;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
    
@@ -89,7 +79,6 @@ public class ElasticSearchInputFormat extends InputFormat<Text, Text> implements
        Sets the configuration object, opens a connection to elasticsearch, and
        initiates the initial search request.
      */
-    @Override
     public void setConf(Configuration configuration) {
         this.conf = configuration;
         this.indexName = conf.get(ES_INDEX_NAME);
@@ -111,7 +100,6 @@ public class ElasticSearchInputFormat extends InputFormat<Text, Text> implements
         initiate_search();
     }
 
-    @Override
     public Configuration getConf() {
         return conf;
     }

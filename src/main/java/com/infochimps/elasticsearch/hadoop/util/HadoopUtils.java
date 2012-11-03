@@ -1,15 +1,13 @@
 package com.infochimps.elasticsearch.hadoop.util;
 
-import java.io.File;
-
-import java.io.IOException;
-import java.io.FileNotFoundException;
-
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class HadoopUtils {
     

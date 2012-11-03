@@ -1,46 +1,25 @@
 package com.infochimps.elasticsearch.pig;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Properties;
-import java.net.URI;
-
+import com.infochimps.elasticsearch.ElasticSearchOutputFormat;
+import com.infochimps.elasticsearch.hadoop.util.HadoopUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.MapWritable;
-import org.apache.hadoop.mapreduce.InputFormat;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.OutputFormat;
-import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.RecordWriter;
-import org.apache.hadoop.filecache.DistributedCache;
-
-import org.apache.pig.StoreFunc;
 import org.apache.pig.ResourceSchema;
-import org.apache.pig.ResourceSchema.ResourceFieldSchema;
+import org.apache.pig.StoreFunc;
 import org.apache.pig.StoreFuncInterface;
-import org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigSplit;
-import org.apache.pig.builtin.Utf8StorageConverter;
-import org.apache.pig.data.DataBag;
-import org.apache.pig.data.DataByteArray;
-import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
-import org.apache.pig.data.TupleFactory;
-import org.apache.pig.impl.logicalLayer.FrontendException;
-import org.apache.pig.impl.util.Utils;
 import org.apache.pig.impl.util.UDFContext;
 
-import com.infochimps.elasticsearch.hadoop.util.HadoopUtils;
-import com.infochimps.elasticsearch.ElasticSearchOutputFormat;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
    Pig storefunc for Elastic Search. Takes tuples of any primitive type, converts them

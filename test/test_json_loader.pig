@@ -2,9 +2,10 @@
 -- This tests the json indexer. Run in local mode with 'pig -x local test/test_json_loader.pig'
 --
 	
-%default ES_JAR_DIR '/usr/local/Cellar/elasticsearch/0.18.7/libexec'
-%default ES_YAML    '/usr/local/Cellar/elasticsearch/0.18.7/config/elasticsearch.yml'
-%default PLUGINS    '/usr/local/Cellar/elasticsearch/0.18.7/plugins'
+%default ES_HOME    '/opt/es'
+%default ES_JAR_DIR '$ES_HOME/lib'
+%default ES_YAML    '$ES_HOME/config/elasticsearch.yml'
+%default PLUGINS    '$ES_HOME/plugins'
 
 %default INDEX      'foo_test'
 %default OBJ        'foo'        

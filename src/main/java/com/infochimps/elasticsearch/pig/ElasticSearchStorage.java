@@ -1,42 +1,31 @@
 package com.infochimps.elasticsearch.pig;
 
-import java.io.IOException;
-import java.lang.InterruptedException;
-import java.util.Properties;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-
+import com.infochimps.elasticsearch.ElasticSearchInputFormat;
+import com.infochimps.elasticsearch.ElasticSearchOutputFormat;
+import com.infochimps.elasticsearch.hadoop.util.HadoopUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.RecordReader;
-import org.apache.hadoop.mapreduce.RecordWriter;
-import org.apache.hadoop.mapreduce.InputFormat;
-import org.apache.hadoop.mapreduce.OutputFormat;
 import org.apache.hadoop.io.*;
-
+import org.apache.hadoop.mapreduce.*;
 import org.apache.pig.LoadFunc;
-import org.apache.pig.StoreFuncInterface;
 import org.apache.pig.ResourceSchema;
-import org.apache.pig.impl.util.UDFContext;
+import org.apache.pig.StoreFuncInterface;
 import org.apache.pig.backend.hadoop.executionengine.mapReduceLayer.PigSplit;
 import org.apache.pig.data.DataByteArray;
 import org.apache.pig.data.Tuple;
 import org.apache.pig.data.TupleFactory;
+import org.apache.pig.impl.util.UDFContext;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.elasticsearch.common.jackson.JsonParseException;
 
-import com.infochimps.elasticsearch.ElasticSearchOutputFormat;
-import com.infochimps.elasticsearch.ElasticSearchInputFormat;
-import com.infochimps.elasticsearch.hadoop.util.HadoopUtils;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface {
 
@@ -118,7 +107,6 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
         elasticSearchSetup(location, job);
     }
 
-    @Override
     public String relToAbsPathForStoreLocation(String location, Path curDir) throws IOException {
         return location;
     }
@@ -128,7 +116,6 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
         return location;
     }
 
-    @Override
     public OutputFormat getOutputFormat() throws IOException {
         return new ElasticSearchOutputFormat();
     }
@@ -136,7 +123,6 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
     /**
        Here we set the field names for a given tuple even if we 
      */
-    @Override
     public void checkSchema(ResourceSchema s) throws IOException {
         UDFContext context  = UDFContext.getUDFContext();
         Properties property = context.getUDFProperties(ResourceSchema.class);
@@ -149,7 +135,6 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
     }
 
     // Suppressing unchecked warnings for RecordWriter, which is not parameterized by StoreFuncInterface
-    @Override
     public void prepareToWrite(@SuppressWarnings("rawtypes") RecordWriter writer) throws IOException {
         this.writer = writer;
     }
@@ -158,7 +143,6 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
        Here we handle both the delimited record case and the json case.
      */
     @SuppressWarnings("unchecked")
-    @Override
     public void putNext(Tuple t) throws IOException {
 
         UDFContext context  = UDFContext.getUDFContext();
@@ -200,7 +184,6 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
         }
     }
 
-    @Override
     public void setStoreFuncUDFContextSignature(String signature) {
         this.contextSignature = signature;        
     }
@@ -292,7 +275,6 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
        <b>WARNING</b> Note that, since this is called more than once, it is
        critical to ensure that we do not change or reset anything we've already set.
      */
-    @Override
     public void setStoreLocation(String location, Job job) throws IOException {
         elasticSearchSetup(location, job);
     }
@@ -349,7 +331,6 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
         return NullWritable.get();
     }
     
-    @Override
     public void cleanupOnFailure(String location, Job job) throws IOException {
     }
 }

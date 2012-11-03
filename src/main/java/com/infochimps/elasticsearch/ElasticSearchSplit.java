@@ -44,14 +44,12 @@ public class ElasticSearchSplit extends InputSplit implements Writable {
         return 0;
     }
 
-    @Override
     public void readFields(DataInput in) throws IOException {
         queryString = Text.readString(in);
         from = in.readLong();
         size = in.readLong();
     }
 
-    @Override
     public void write(DataOutput out) throws IOException {
         Text.writeString(out, queryString);
         out.writeLong(from);
