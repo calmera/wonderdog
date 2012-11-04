@@ -125,7 +125,7 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
      */
     public void checkSchema(ResourceSchema s) throws IOException {
         UDFContext context  = UDFContext.getUDFContext();
-        Properties property = context.getUDFProperties(ResourceSchema.class);
+        Properties property = context.getUDFProperties(this.getClass(), new String[] { contextSignature });
         String fieldNames   = "";       
         for (String field : s.fieldNames()) {
             fieldNames += field;
@@ -146,7 +146,7 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
     public void putNext(Tuple t) throws IOException {
 
         UDFContext context  = UDFContext.getUDFContext();
-        Properties property = context.getUDFProperties(ResourceSchema.class);
+        Properties property = context.getUDFProperties(this.getClass(), new String[] { contextSignature });
         MapWritable record  = new MapWritable();
 
         String isJson = property.getProperty(ES_IS_JSON);
@@ -256,7 +256,7 @@ public class ElasticSearchStorage extends LoadFunc implements StoreFuncInterface
                 if (isJson==null || isJson.equals("false")) {
                     // We're dealing with delimited records
                     UDFContext context  = UDFContext.getUDFContext();
-                    Properties property = context.getUDFProperties(ResourceSchema.class);
+                    Properties property = context.getUDFProperties(this.getClass(), new String[] { contextSignature });
                     property.setProperty(ES_IS_JSON, "false");
                 }
 
